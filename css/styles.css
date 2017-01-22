@@ -1,0 +1,48 @@
+body{
+	background: #e3e3e3;
+	font-family: verdana, sans-serif;
+	margin:0;
+	padding:0;
+}
+.center{
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+.heading{
+	border-bottom: black solid 1px;
+	display:block;
+}
+.size{
+	font-size:1em;
+	height: 1.5em;
+	margin-right: 10px;
+	text-align: center;
+	width:5em;
+}
+.submit{
+	font-size: 1em;
+}
+.table-container{
+	margin-top: 20px;
+	text-align:center;
+}
+.last{
+	border-left: black solid 1px;
+}
+.entry{
+	font-size: 1em;
+	height: 40px;
+	text-align:center;
+	width: 40px;
+}
+.inline{
+	display:flex;
+}
+.left{
+	margin-left:auto;
+}
+.right{
+	border-left: black solid;
+	margin-right:auto;
+}
