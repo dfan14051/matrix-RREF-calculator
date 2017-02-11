@@ -46,3 +46,15 @@ body{
 	border-left: black solid;
 	margin-right:auto;
 }
+.grid{
+	border: black solid 1px;
+	margin-bottom: 10px;
+}
+.entry{
+	border: black solid 1px;
+	padding: 3px;
+}
+.new{
+	margin-bottom: 20px;
+	margin-top: 20px;
+}

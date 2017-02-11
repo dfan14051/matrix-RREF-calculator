@@ -85,13 +85,15 @@ function simplify(height, width) {
   //actual simplification algorithm
   let pivot = 0;
   let pivotIndex = 0;
-  while (pivot < height || pivotIndex < width) {
+
+  //REF simplify
+  while (pivot < height && pivotIndex < width) {
     let oneFound = false;
     let emptyColumn = true;
 
     //See if any pivot is already a 1
     for (let i = pivot; i < height; i++) {
-      if (parseFloat(matrix[pivot][pivotIndex]) === 1) {
+      if (parseFloat(matrix[pivot][pivotIndex]) === 1.0) {
         swapRow(pivot, i, matrix);
         oneFound = true;
         emptyColumn = false;
@@ -101,7 +103,7 @@ function simplify(height, width) {
     if (!oneFound) {
       //find the first nonzero pivot
       let nonZero = pivot;
-      while (nonZero < height && parseFloat(matrix[nonZero][pivotIndex]) !== 0) {
+      while (nonZero < height && parseFloat(matrix[nonZero][pivotIndex]) === 0) {
         nonZero++;
       }
 
@@ -110,23 +112,46 @@ function simplify(height, width) {
         pivotIndex++;
       } else {
         emptyColumn = false;
-        if (nonZero != pivot) {
-          swapRow(pivot, nonzero, matrix);
+        if (nonZero !== pivot) {
+          swapRow(pivot, nonZero, matrix);
         }
 
-        multiplyConstant(pivot, 1 / matrix[pivot][pivotIndex], matrix);
+        multiplyConstant(pivot, 1 / parseFloat(matrix[nonZero][pivotIndex]), matrix);
 
+      }
+
+      for (let i = pivot + 1; i < height; i++) {
+        addRowtoRow(i, pivot, -parseFloat(matrix[i][pivotIndex]), matrix);
       }
 
     }
 
     if (!emptyColumn) {
       pivot++;
+      pivotIndex++;
     }
   }
 
+  //Backpropagate for RREF
+  if (pivot === height) {
+    pivot = height - 1;
+  }
+
+  if (pivotIndex === width) {
+    pivotIndex = width - 1;
+  }
+
+  while (pivot >= 0 && pivotIndex >= 0) {
+    for (let i = pivot - 1; i >= 0; i--) {
+      addRowtoRow(i, pivot, -parseFloat(matrix[i][pivotIndex - 1]), matrix);
+    }
+
+    pivot--;
+    pivotIndex--;
+  }
+
   //add a button to go back to matrix creation
-  let button = "<button class='submit' onclick='homeScreen();'>New Matrix</button>";
+  let button = "<button class='submit new' onclick='homeScreen();'>New Matrix</button>";
   $content.append(button);
 
 }
@@ -142,7 +167,7 @@ function swapRow(row1, row2, matrix) {
   let tempRow = matrix[row1];
   matrix[row1] = matrix[row2];
   matrix[row2] = tempRow;
-  message = 'Swap Row ' + row1 + ' with Row ' + row2;
+  message = 'Swap Row ' + (row1 + 1) + ' with Row ' + (row2 + 1);
   printOperation(message, matrix);
 }
 
@@ -152,37 +177,38 @@ function multiplyConstant(row, scalar, matrix) {
     matrix[row][i] = scalar * matrix[row][i];
   }
 
-  message = 'Multiply Row ' + row1 + ' by ' + scalar;
+  message = 'Multiply Row ' + (row + 1) + ' by ' + scalar;
   printOperation(message, matrix);
 }
 
 // R1 = R1 + cR2
 function addRowtoRow(row1, row2, scalar, matrix) {
+  if (scalar === 0)
+    return;
   for (let i = 0; i < matrix[row1].length; i++) {
     matrix[row1][i] = parseFloat(matrix[row1][i]) + scalar * matrix[row2][i];
   }
 
-  message = 'Add ' + scalar + ' times Row ' + row2 + 'to Row ' + row1;
+  message = 'Add ' + scalar + ' times Row ' + (row2 + 1) + ' to Row ' + (row1 + 1);
   printOperation(message, matrix);
 }
 
 // Print out the current operation and what the matrix looks like now
 function printOperation(message, matrix) {
   let operationMessage = "<div class = 'center'><p>" + message + '</p></div>';
-  let table = '<table>';
+  let table = "<table class = 'center grid'>";
   for (let i = 0; i < matrix.length; i++) {
     table += '<tr>';
     for (let j = 0; j < matrix[i].length; j++) {
-      table += '<td>' + matrix[i][j] + '</td>';
+      table += '<td class = "entry">' + matrix[i][j] + '</td>';
     }
 
     table += '</tr>';
   }
+
   let $content = $('.content');
   $content.append(operationMessage);
   $content.append(table);
-
-
 
 }
 
