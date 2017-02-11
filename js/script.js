@@ -135,15 +135,17 @@ function simplify(height, width) {
   //Backpropagate for RREF
   if (pivot === height) {
     pivot = height - 1;
+    pivotIndex--;
   }
 
   if (pivotIndex === width) {
     pivotIndex = width - 1;
+    pivot--;
   }
 
   while (pivot >= 0 && pivotIndex >= 0) {
     for (let i = pivot - 1; i >= 0; i--) {
-      addRowtoRow(i, pivot, -parseFloat(matrix[i][pivotIndex - 1]), matrix);
+      addRowtoRow(i, pivot, -parseFloat(matrix[i][pivotIndex]), matrix);
     }
 
     pivot--;
