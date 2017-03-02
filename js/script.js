@@ -91,14 +91,16 @@ function simplify(height, width) {
     let oneFound = false;
     let emptyColumn = true;
 
-    //See if any pivot is already a 1
+    /*//See if any pivot is already a 1
     for (let i = pivot; i < height; i++) {
       if (parseFloat(matrix[pivot][pivotIndex]) === 1.0) {
-        swapRow(pivot, i, matrix);
+        if (pivot != i)
+          swapRow(pivot, i, matrix);
         oneFound = true;
         emptyColumn = false;
+        break;
       }
-    }
+    }*/
 
     if (!oneFound) {
       //find the first nonzero pivot
