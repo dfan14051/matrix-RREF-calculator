@@ -118,7 +118,9 @@ function simplify(height, width) {
           swapRow(pivot, nonZero, matrix);
         }
 
-        multiplyConstant(pivot, 1 / parseFloat(matrix[nonZero][pivotIndex]), matrix);
+        if (1 / parseFloat(matrix[nonZero][pivotIndex]) !== 1) {
+          multiplyConstant(pivot, 1 / parseFloat(matrix[nonZero][pivotIndex]), matrix);
+        }
 
       }
 
